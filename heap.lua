@@ -157,13 +157,11 @@ end
 -- Percolates up the heap recursively, ordering each node by the chosen sort method.
 -- Returns nothing [nil]
 function Heap:_percolate_up(index)
-  if index > 1 then
-    local parent_index = self:_parentIndex(index)
-
-    if self._nodes[parent_index] and not self:_sort(self._nodes[parent_index].weight, self._nodes[index].weight) then
-      self._nodes[parent_index], self._nodes[index] = self._nodes[index], self._nodes[parent_index]
-      self:_percolate_up(parent_index) -- Recursive call from the parent index
-    end
+  local parent_index = self:_parentIndex(index)
+  
+  if self._nodes[parent_index] and not self:_sort(self._nodes[parent_index].weight, self._nodes[index].weight) then
+    self._nodes[parent_index], self._nodes[index] = self._nodes[index], self._nodes[parent_index]
+    self:_percolate_up(parent_index) -- Recursive call from the parent index
   end
 end
 
