@@ -1,7 +1,7 @@
 # lua-binary-heap
 Binary heap data structure implemented in lua.
 
-Built as a class with kikito's middleclass: https://github.com/kikito/middleclass
+Built as a class with [kikito's middleclass](https://github.com/kikito/middleclass) which you will need as a dependency.
 
 ## Usage
 
