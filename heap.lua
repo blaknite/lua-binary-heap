@@ -2,6 +2,11 @@ local class = require 'vendor.middleclass'
 
 local Heap = class('Heap')
 
+local valid_types = {
+  min = true,
+  max = true,
+}
+
 -- Initializes the heap.
 -- Type can be one of 'min' or 'max'. Defaults to 'min'.
 -- Returns an instance of Heap.
@@ -15,7 +20,7 @@ end
 -- Can be one of min or max.
 -- Returns nothing [nil]
 function Heap:setType(type)
-  assert(type == 'min' or type == 'max', "type must be one of 'min' or 'max'")
+  assert(valid_types[type], "type must be one of 'min' or 'max'")
 
   self._type = type
   self:reset()
@@ -116,7 +121,7 @@ end
 -- Default sorting function.
 -- Used for Min-Heaps creation.
 function Heap:_sort(a, b)
-  assert(self._type == 'min' or self._type == 'max', "type must be one of 'min' or 'max'")
+  assert(valid_types[self._type], "type must be one of 'min' or 'max'")
 
   if self._type == 'min' then
     return a < b
