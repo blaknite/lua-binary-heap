@@ -36,7 +36,7 @@ function Heap:pop()
     table.remove(self._nodes, 1)
 
     if not self:isEmpty() then
-      self:_percolate_down(1)
+      self:_percolateDown(1)
     end
 
     return node.weight, node.payload
@@ -65,13 +65,13 @@ end
 -- Returns nothing [nil]
 function Heap:insert(weight, payload)
   self._nodes[#self._nodes + 1] = { weight = weight, payload = payload }
-  self:_percolate_up(#self._nodes)
+  self:_percolateUp(#self._nodes)
 end
 
 -- Resets the order of the heap.
 -- Returns nothing [nil]
 function Heap:reset()
-  self:_percolate_down(1)
+  self:_percolateDown(1)
 end
 
 -- Gets the size of the heap (the number of nodes stored).
@@ -156,18 +156,18 @@ end
 
 -- Percolates up the heap recursively, ordering each node by the chosen sort method.
 -- Returns nothing [nil]
-function Heap:_percolate_up(index)
+function Heap:_percolateUp(index)
   local parent_index = self:_parentIndex(index)
-  
+
   if self._nodes[parent_index] and not self:_sort(self._nodes[parent_index].weight, self._nodes[index].weight) then
     self._nodes[parent_index], self._nodes[index] = self._nodes[index], self._nodes[parent_index]
-    self:_percolate_up(parent_index) -- Recursive call from the parent index
+    self:_percolateUp(parent_index) -- Recursive call from the parent index
   end
 end
 
 -- Percolates down the heap recursively, ordering each node by the chosen sort method.
 -- Returns nothing [nil]
-function Heap:_percolate_down(index)
+function Heap:_percolateDown(index)
   local left_child_index = self:_leftChildIndex(index)
   local right_child_index = self:_rightChildIndex(index)
   local min_index
@@ -188,7 +188,7 @@ function Heap:_percolate_down(index)
 
   if self:_sort(self._nodes[min_index].weight, self._nodes[index].weight) then
     self._nodes[index], self._nodes[min_index] = self._nodes[min_index], self._nodes[index]
-    self:_percolate_down(min_index) -- Recursive call from the newly shifted index
+    self:_percolateDown(min_index) -- Recursive call from the newly shifted index
   end
 end
 
