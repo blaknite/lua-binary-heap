@@ -116,7 +116,7 @@ end
 -- Default sorting function.
 -- Used for Min-Heaps creation.
 function Heap:_sort(a, b)
-  assert(type == 'min' or type == 'max', "type must be one of 'min' or 'max'")
+  assert(self._type == 'min' or self._type == 'max', "type must be one of 'min' or 'max'")
 
   if self._type == 'min' then
     return a < b
