@@ -38,7 +38,8 @@ function Heap:pop()
   local node = self._nodes[1]
 
   if node then
-    table.remove(self._nodes, 1)
+    self._nodes[1] = self._nodes[#self._nodes]
+    table.remove(self._nodes, #self._nodes)
 
     if not self:isEmpty() then
       self:_percolateDown(1)
@@ -164,7 +165,7 @@ end
 function Heap:_percolateUp(index)
   local parent_index = self:_parentIndex(index)
 
-  if self._nodes[parent_index] and not self:_sort(self._nodes[parent_index].weight, self._nodes[index].weight) then
+  if self._nodes[parent_index] and self:_sort(self._nodes[index].weight, self._nodes[parent_index].weight) then
     self._nodes[parent_index], self._nodes[index] = self._nodes[index], self._nodes[parent_index]
     self:_percolateUp(parent_index) -- Recursive call from the parent index
   end
@@ -173,27 +174,21 @@ end
 -- Percolates down the heap recursively, ordering each node by the chosen sort method.
 -- Returns nothing [nil]
 function Heap:_percolateDown(index)
-  local left_child_index = self:_leftChildIndex(index)
-  local right_child_index = self:_rightChildIndex(index)
-  local min_index
+  local test_index  = index
+  local left_index  = self:_leftChildIndex(index)
+  local right_index = self:_rightChildIndex(index)
 
-  if not self._nodes[left_child_index] and not self._nodes[right_child_index] then
-    return
+  if self._nodes[left_index] and self:_sort(self._nodes[left_index].weight, self._nodes[test_index].weight) then
+    test_index = left_index
   end
 
-  if not self._nodes[right_child_index] then
-    min_index = left_child_index
-  else
-    if self:_sort(self._nodes[left_child_index].weight, self._nodes[right_child_index].weight) then
-      min_index = left_child_index
-    else
-      min_index = right_child_index
-    end
+  if self._nodes[right_index] and self:_sort(self._nodes[right_index].weight, self._nodes[test_index].weight) then
+    test_index = right_index
   end
 
-  if self:_sort(self._nodes[min_index].weight, self._nodes[index].weight) then
-    self._nodes[index], self._nodes[min_index] = self._nodes[min_index], self._nodes[index]
-    self:_percolateDown(min_index) -- Recursive call from the newly shifted index
+  if test_index ~= index then
+    self._nodes[index], self._nodes[test_index] = self._nodes[test_index], self._nodes[index]
+    self:_percolateDown(test_index) -- Recursive call from the newly shifted index
   end
 end
 
